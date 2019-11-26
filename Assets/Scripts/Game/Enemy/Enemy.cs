@@ -41,8 +41,14 @@ public class Enemy : MonoBehaviour
 
     private int wayPointIndex = 0;
 
+    void Start()
+    {
+        EnemyManager.Instance.RegisterEnemy(this);
+    }
+
     void OnGotToLastWayPoint()
     {
+        GameManager.Instance.OnEnemyEscape();
         Die();
     }
 
@@ -52,44 +58,54 @@ public class Enemy : MonoBehaviour
 
         if (health <= 0)
         {
+            DropGold();
             Die();
         }
     }
 
+    void DropGold()
+    {
+        GameManager.Instance.gold += goldDrop;
+    }
 
     void Die()
     {
         if (gameObject != null)
         {
-            Destroy(gameObject);
+            //1   
+            EnemyManager.Instance.UnRegister(this);
+            //2 
+            gameObject.AddComponent<AutoScaler>().scaleSpeed = -2;
+            //3  
+            enabled = false;
+            //4   
+            Destroy(gameObject, 0.3f);
         }
     }
 
     void Update()
     {
-        //1
+        //1 if theres waypoints update movement 
         if(wayPointIndex < WayPointManager.Instance.Paths[pathIndex].WayPoints.Count)
         {
             UpdateMovement();
         }
         else
-        //2
+        //2 run out of way points
         {
             OnGotToLastWayPoint();
         }
     }
     private void UpdateMovement()
     {
-        //3
-        Vector3 targetPosition =
-            WayPointManager.Instance.Paths[pathIndex]
-            .WayPoints[wayPointIndex].position;
-        //4
+        //3 next point is the target 
+        Vector3 targetPosition = WayPointManager.Instance.Paths[pathIndex].WayPoints[wayPointIndex].position;
+        //4move towards target
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, moveSpeed * Time.deltaTime);
-        //5
-        transform.LookAt(targetPosition);
-        // 6
-        if(Vector3.Distance(transform.position, targetPosition) < 0.1f)
+        //5 look at target 
+        transform.localRotation = UtilityMethods.SmoothlyLook(transform, targetPosition);
+        // 6 if the enemy is very close to the target waypoint, set the next waypoint as the target
+        if (Vector3.Distance(transform.position, targetPosition) < 0.1f)
         {
             wayPointIndex++;
         }

@@ -26,11 +26,11 @@ public class GameManager : MonoBehaviour
     {
        if (!gameOver && enemySpawningOver)
        {
-            if(EnemyManager.Instance.Enemies.Count == 0)
+            if (EnemyManager.Instance.Enemies.Count == 0)
             {
                 QuitToTitleScreen();
             }
-       }
+        }
     }
 
     void OnGameWin()
@@ -43,4 +43,30 @@ public class GameManager : MonoBehaviour
     {
         SceneManager.LoadScene("TitleScreen");
     }
+
+    //1 
+    public void OnEnemyEscape()
+    {
+        escapedEnemies++;
+        if (escapedEnemies == maxAllowedEscapedEnemies)
+        {
+            // Too many enemies escaped, you lose the game  
+            OnGameLose();
+        }
+    }
+
+    //2 
+    private void OnGameLose()
+    {
+        gameOver = true;
+        AudioSource.PlayClipAtPoint(gameLoseSound, Camera.main.transform.position);
+        EnemyManager.Instance.DestroyAllEnemies();   WaveManager.Instance.StopSpawning();
+    }
+
+    //3
+    public void RetryLevel()
+    {
+        SceneManager.LoadScene("Game");
+    } 
+
 }

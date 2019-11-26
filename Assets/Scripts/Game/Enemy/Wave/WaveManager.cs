@@ -6,23 +6,23 @@ public class WaveManager : MonoBehaviour
 {
     //1
     public static WaveManager Instance;
-    //2
+    //2 list of enemy waves that wuk 
     public List<EnemyWave> enemyWaves = new List<EnemyWave>();
-    //3
+    //3 how much time has passed 
     private float elapsedTime = 0f;
-    //4
+    //4 wave that currently active on screen
     private EnemyWave activeWave;
-    //5
+    //5 keeps tracks of last spawned, 
     private float spawnCounter = 0f;
-    //6
+    //6 list of already active waves 
     private List<EnemyWave> activatedWaves = new List<EnemyWave>();
 
-    //1
+    //1 sets instance of itself 
     private void Awake()
     {
         Instance = this;
     }
-    //2
+    //2 adds ti time elapsed cheak to see if a new wave has started
     void Update()
     {
         elapsedTime += Time.deltaTime;
@@ -43,6 +43,7 @@ public class WaveManager : MonoBehaviour
                 activeWave = enemyWave;
                 activatedWaves.Add(enemyWave);
                 spawnCounter = 0f;
+                GameManager.Instance.waveNumber++;
                 //6
                 break;
             }
@@ -50,7 +51,7 @@ public class WaveManager : MonoBehaviour
     }
     private void UpdateActiveWave()
     {
-        //1
+        //1 only go if there is a acitve wave 
         if(activeWave!= null)
         {
             spawnCounter += Time.deltaTime;
@@ -78,6 +79,7 @@ public class WaveManager : MonoBehaviour
                     if(activatedWaves.Count == enemyWaves.Count)
                     {
                         // All waves are over
+                        GameManager.Instance.enemySpawningOver = true;
                     }
                 }
             }
