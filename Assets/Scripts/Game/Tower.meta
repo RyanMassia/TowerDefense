@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scripts/Game/Tower.meta
 guid: 378c8f37fa035a54288a116ac160e144
+=======
+guid: 21667aebdb547874685627f0a51b95cc
+>>>>>>> 83b529278e98ed8f5dd9d37cfea406f2cb4cc577:Assets/Scenes/Game.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
