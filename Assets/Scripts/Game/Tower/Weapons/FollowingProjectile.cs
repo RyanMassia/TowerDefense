@@ -25,7 +25,7 @@ public abstract class FollowingProjectile : MonoBehaviour
     }
 
     //5
-    public void OnTriggerEnter(Collider collider)
+    public void OnTriggerEnter(Collider other)
     {
         if(other.GetComponent<Enemy>()== enemyToFollow)
         {
