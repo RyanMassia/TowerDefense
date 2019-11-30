@@ -17,6 +17,8 @@ public class UIManager : MonoBehaviour
     public Text txtGold;
     public Text txtWave;
     public Text txtEscapedEnemies;
+    public Transform enemyHealthBars;
+    public GameObject enemyHealthBarPrefab;
 
     //1 Set Instance to the UIManager script
     void Awake()
@@ -61,4 +63,16 @@ public class UIManager : MonoBehaviour
         blackBackground.SetActive(true);
         loseGameWindow.SetActive(true);
     }
+
+    //1 CreateHealthBarForEnemy accepts the enemy that needs a health bar as its sole parameter.
+    public void CreateHealthBarForEnemy(Enemy enemy)
+    {
+        //2  Create a new health ba
+        GameObject healthBar = Instantiate(enemyHealthBarPrefab);
+        //3  Parent the new health bar to EnemyHealthBar
+        healthBar.transform.SetParent(enemyHealthBars, false);
+        //4  Pass the enemy reference to the health bar.
+        healthBar.GetComponent<EnemyHealthBar>().enemy = enemy;
+    } 
+
 }
