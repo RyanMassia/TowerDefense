@@ -14,6 +14,7 @@ public class UIManager : MonoBehaviour
     public GameObject loseGameWindow;
     public GameObject blackBackground;
     public GameObject centerWindow;
+    public GameObject damageCanvas;
     //3 Reference TO text 
     public Text txtGold;
     public Text txtWave;
@@ -91,6 +92,22 @@ public class UIManager : MonoBehaviour
             centerWindow.SetActive(true);
             yield return new WaitForSeconds(.4f);
             centerWindow.SetActive(false);
+        }
+    }
+
+    //1 When ShowDamage() is called, start the damage animatio
+    public void ShowDamage()
+    {
+        StartCoroutine(DoDamageAnimation());
+    }
+    //2 quickly ﬂicker the DamageCanvas three times by disabling and enabling it in quick succession. 
+    private IEnumerator DoDamageAnimation()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(.1f);
+            damageCanvas.SetActive(true);
+            yield return new WaitForSeconds(.1f); damageCanvas.SetActive(false);
         }
     }
 
