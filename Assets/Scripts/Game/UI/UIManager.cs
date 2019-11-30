@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
     public GameObject winGameWindow;
     public GameObject loseGameWindow;
     public GameObject blackBackground;
+    public GameObject centerWindow;
     //3 Reference TO text 
     public Text txtGold;
     public Text txtWave;
@@ -73,6 +74,24 @@ public class UIManager : MonoBehaviour
         healthBar.transform.SetParent(enemyHealthBars, false);
         //4  Pass the enemy reference to the health bar.
         healthBar.GetComponent<EnemyHealthBar>().enemy = enemy;
-    } 
+    }
+
+    //1et the text of the Center window to the string value set for the parameter
+    public void ShowCenterWindow(string text)
+    {
+        centerWindow.transform.FindChild("TxtWave").GetComponent<Text>().text = text;
+        StartCoroutine(EnableAndDisableCenterWindow());
+    }
+    //2 This enables and disables the Center window every 0.4 seconds three times so that it ﬂickers to demand the player’s attention
+    private IEnumerator EnableAndDisableCenterWindow()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(.4f);
+            centerWindow.SetActive(true);
+            yield return new WaitForSeconds(.4f);
+            centerWindow.SetActive(false);
+        }
+    }
 
 }
