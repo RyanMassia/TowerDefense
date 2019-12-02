@@ -35,11 +35,15 @@ public class Enemy : MonoBehaviour
     public float maxHealth = 100f;
     public float health = 100f;
     public float moveSpeed = 3f;
+    public float freezeTimer;
+    public float timeEnemyStaysFrozenInSeconds = 2.0f;
     public int goldDrop = 10;
-
+    public bool frozen;
+   
     public int pathIndex = 0;
 
     private int wayPointIndex = 0;
+
 
     void Start()
     {
@@ -83,6 +87,24 @@ public class Enemy : MonoBehaviour
         }
     }
 
+    public void Freeze()
+    {
+        if (!frozen)
+        {
+            //2
+            frozen = true;
+            moveSpeed /= 2;
+
+        }
+    }
+
+    void Defrost()
+    {
+        freezeTimer = 0.0f;
+        frozen = false;
+        moveSpeed *= 2;
+    }
+
     void Update()
     {
         //1 if theres waypoints update movement 
@@ -94,6 +116,15 @@ public class Enemy : MonoBehaviour
         //2 run out of way points
         {
             OnGotToLastWayPoint();
+        }
+
+        if(frozen)
+        {
+            freezeTimer += Time.deltaTime;
+            if(freezeTimer >= timeEnemyStaysFrozenInSeconds)
+            {
+                Defrost();
+            }
         }
     }
     private void UpdateMovement()
